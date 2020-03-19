@@ -2,33 +2,33 @@ $(init);
 
 function init() {
   // get current day and display on top of page
-  var now = moment();
-  $("#currentDay").text(now.format("dddd, MMMM Do"))
+  $("#currentDay").text(moment().format("dddd, MMMM Do"));
+  // color our time blocks
+  $(".time-block").each(updateTimeBlock);
+  // attach our handler for the save buttons
+  $(".saveBtn").on("click", handleSave);
+}
 
-  // get current hour
-  var currentHour = now.format("H");
-  // paint our hour divs by adding appropriate class
-  for (var i = 9; i <= 17; i++) {
-    if (i < currentHour) {
-      // past
-      $("#hour-" + i).addClass("past");
-    } else if (i > currentHour) {
-      // future
-      $("#hour-" + i).addClass("future");
-    } else {
-      // present
-      $("#hour-" + i).addClass("present");
-    }
-    // load saved data from local storage
-    $("#hour-" + i + " > textarea").text(localStorage.getItem("hour-" + i));
+function updateTimeBlock() {
+  var blockId = $(this).attr("id");
+  var blockHour = parseInt(blockId.replace("hour-", ""));
+  var currentHour = parseInt(moment().format("H"));
+  // color block based on past, present, future class
+  if (blockHour < currentHour) {
+    $(this).addClass("past");
+  } else if (blockHour > currentHour) {
+    $(this).addClass("future");
+  } else {
+    $(this).addClass("present");
   }
 
-  $(".saveBtn").on("click", handleSave);
+  // load saved data from local storage
+  $("#" + blockId + " > textarea").text(localStorage.getItem(moment().format("DDDYYYY") + blockId));
 }
 
 function handleSave(event) {
   // get the id of our parent
   var hourId = $(this).parent().attr("id");
   // save data in textarea in local storage
-  localStorage.setItem(hourId, $("#" + hourId + " > textarea").val())
+  localStorage.setItem(moment().format("DDDYYYY") + hourId, $("#" + hourId + " > textarea").val());
 }
