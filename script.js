@@ -24,6 +24,8 @@ function colorTimeBlocks() {
   $(".time-block").each(function() {
     var blockHour = parseInt($(this).attr("id").replace("hour-", ""));
     var currentHour = parseInt(moment().format("H"));
+    // remove any class we may have added before
+    $(this).removeClass("past present future");
     // color block based on past, present, future class
     if (blockHour < currentHour) {
       $(this).addClass("past");
