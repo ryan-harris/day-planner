@@ -12,7 +12,7 @@ function init() {
   $(".time-block").each(function() {
     var blockId = $(this).attr("id");
     // load saved data from local storage
-    $("#" + blockId + " > textarea").text(localStorage.getItem(moment().format("DDDYYYY") + blockId));
+    $("#" + blockId + " textarea").text(localStorage.getItem(moment().format("DDDYYYY") + blockId));
   });
 
   // attach our handler for the save buttons
@@ -41,5 +41,5 @@ function handleSave(event) {
   // get the id of our parent
   var hourId = $(this).parent().attr("id");
   // save data in textarea in local storage
-  localStorage.setItem(moment().format("DDDYYYY") + hourId, $("#" + hourId + " > textarea").val());
+  localStorage.setItem(moment().format("DDDYYYY") + hourId, $("#" + hourId + " textarea").val());
 }
