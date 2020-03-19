@@ -3,18 +3,26 @@ $(init);
 function init() {
   // get current day and display on top of page
   $("#currentDay").text(moment().format("dddd, MMMM Do"));
-  // color our time blocks and update every minute in case the hour changes
-  updateTimeBlocks();
-  setInterval(updateTimeBlocks, 60000);
+
+  // color our time blocks and start interval to re-color every minute
+  colorTimeBlocks();
+  setInterval(colorTimeBlocks, 60000);
+
+  // update time blocks with saved data
+  $(".time-block").each(function() {
+    var blockId = $(this).attr("id");
+    // load saved data from local storage
+    $("#" + blockId + " > textarea").text(localStorage.getItem(moment().format("DDDYYYY") + blockId));
+  });
+
   // attach our handler for the save buttons
   $(".saveBtn").on("click", handleSave);
 }
 
-function updateTimeBlocks() {
+function colorTimeBlocks() {
   // for each time block
   $(".time-block").each(function() {
-    var blockId = $(this).attr("id");
-    var blockHour = parseInt(blockId.replace("hour-", ""));
+    var blockHour = parseInt($(this).attr("id").replace("hour-", ""));
     var currentHour = parseInt(moment().format("H"));
     // color block based on past, present, future class
     if (blockHour < currentHour) {
@@ -24,9 +32,6 @@ function updateTimeBlocks() {
     } else {
       $(this).addClass("present");
     }
-  
-    // load saved data from local storage
-    $("#" + blockId + " > textarea").text(localStorage.getItem(moment().format("DDDYYYY") + blockId));
   });
 }
 
