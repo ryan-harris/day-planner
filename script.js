@@ -8,7 +8,7 @@ function init() {
   colorTimeBlocks();
   setInterval(colorTimeBlocks, 60000);
 
-  // update time blocks with saved data
+  // update time blocks with data in local storage
   $(".time-block").each(function() {
     var blockId = $(this).attr("id");
     // load saved data from local storage
